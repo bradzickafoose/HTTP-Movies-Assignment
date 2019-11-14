@@ -57,14 +57,28 @@ body {
   position: absolute;
   top: 25px;
   right: 25px;
-  border: 1px solid grey;
+  border: 1px solid lightgrey;
   padding: 5px 10px;
-  background-color: lightseagreen;
+  background-color: lightgrey;
 }
 .save-button:hover {
-  background-color: green;
+  background-color: lightseagreen;
   color: white;
 }
+
+.update-button {
+  position: absolute;
+  top: 60px;
+  right: 25px;
+  border: 1px solid lightgrey;
+  padding: 5px 10px;
+  background-color: lightgrey;
+}
+.update-button:hover {
+  background-color: lightseagreen;
+  color: white;
+}
+
 
 .home-button {
   padding: 5px 10px;
