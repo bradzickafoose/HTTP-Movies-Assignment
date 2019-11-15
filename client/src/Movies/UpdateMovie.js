@@ -11,6 +11,7 @@ const initialMovie = {
 
 const UpdateMovie = props => {
     const [movie, setMovie] = useState(initialMovie);
+
     const changeHandler = e => {
         e.persist();
         let value = e.target.value;
