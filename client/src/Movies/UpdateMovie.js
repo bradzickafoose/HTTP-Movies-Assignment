@@ -12,68 +12,65 @@ const initialMovie = {
 const UpdateMovie = props => {
     const [movie, setMovie] = useState(initialMovie);
 
-    const changeHandler = e => {
-        e.persist();
-        let value = e.target.value;
-        if (e.target.name === 'metascore') {
-            value = parseInt(value, 10);
-        }
+    const handleChanges = e => {
         setMovie({
             ...movie,
-            [e.target.name]: value
-        })
+            [e.target.name]: e.target.value
+        });
     }
-
-    useEffect(() => {
-        if (props.movies.length > 0) {
-            const newMovie = props.movies.find(
-                thing => `${thing.id}` === props.match.params
-            )
-            setMovie(newMovie)
-        }
-    }, [props.movies, props.match.params.id]);
 
     const handleSubmit = e => {
         e.preventDefault();
         axios
-            .put(`http://localhost:3333/movies/${movie.id}`, movie)
-            .then(response => {
-                props.updateMovies(response.data)
-            })
-            .catch(err => console.log(err))
+            .put(`http://localhost:5000/api/movies/${props.match.params.id}`, movie)
+            .then(() => props.history.push('/'))
+            .catch(err => console.log(err));
     }
 
-    if (props.movies.length === 0) {
-        return <h2>Loading data...</h2>
-    }
+    useEffect(() => {
+        axios
+            .get(`http://localhost:5000/api/movies/${props.match.params.id}`)
+            .then(response => setMovie(response.data))
+            .catch(err => console.log(err.response));
+    }, []);
+
+    // if (props.movies.length === 0) {
+    //     return <h2>Loading data...</h2>
+    // }
 
     return (
         <div>
             <h2>Update Movie</h2>
             <form onSubmit={handleSubmit}>
-                <input
-                    type='text'
-                    name='Movie Title'
-                    onChange={changeHandler}
-                    placeholder='title'
-                    value={movie.title}
-                />
-                <input
-                    type='text'
-                    name='Director'
-                    onChange={changeHandler}
-                    placeholder='director'
-                    value={movie.director}
-                />
-                <input
-                    type='number'
-                    name='Metascore'
-                    onChange={changeHandler}
-                    placeholder='Metascore'
-                    value={movie.metascore}
-                />
+                <div>
+                    <label htmlFor='Movie Title'>Movie Title</label>
+                    <input
+                        type='text'
+                        name='title'
+                        onChange={handleChanges}
+                        value={movie.title}
+                    />
+                </div>
+                <div>
+                    <label htmlFor='Director'>Director</label>
+                    <input
+                        type='text'
+                        name='director'
+                        onChange={handleChanges}
+                        value={movie.director}
+                    />
+                </div>
+                <div>
+                    <label htmlFor='Metascore'>Metascore</label>
+                    <input
+                        type='number'
+                        name='metascore'
+                        onChange={handleChanges}
+                        value={movie.metascore}
+                    />
+                </div>
 
-                <button>Update</button>
+                <button type='submit'>Update</button>
             </form>
         </div>
     )
