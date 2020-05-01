@@ -12,10 +12,10 @@ const initialMovie = {
 const UpdateMovie = props => {
     const [movie, setMovie] = useState(initialMovie);
 
-    const handleChanges = e => {
+    const handleChanges = event => {
         setMovie({
             ...movie,
-            [e.target.name]: e.target.value
+            [event.target.name]: event.target.value
         });
     }
 
@@ -24,14 +24,14 @@ const UpdateMovie = props => {
         axios
             .put(`http://localhost:5000/api/movies/${props.match.params.id}`, movie)
             .then(() => props.history.push('/'))
-            .catch(err => console.log(err));
+            .catch(error => console.error(error));
     }
 
     useEffect(() => {
         axios
             .get(`http://localhost:5000/api/movies/${props.match.params.id}`)
             .then(response => setMovie(response.data))
-            .catch(err => console.log(err.response));
+            .catch(error => console.error(error.response));
     }, []);
 
     // if (props.movies.length === 0) {
